@@ -7,9 +7,8 @@ use \Hcode\Mailer;
 class User extends Model{
 
 	const SESSION = "User";
-
-	const SECRET = '1234567891234567';
-	const SECRET_IV = '1234567891234567';
+	const SECRET = "HcodePhp7_Secret";
+	
 	
 
 	public static function login ($login, $password)
@@ -19,6 +18,7 @@ class User extends Model{
 
 	$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
 			":LOGIN"=>$login
+			
 
 		));
 
@@ -248,22 +248,14 @@ public static function getForgot($email, $inadmin = true)
 
 	}
 
-
-	public function setPassword()
-	{
-
-
-
-		$sql = new Sql();
-
-		$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
-			":password"=>$password,
-			":iduser"=>$this->getiduser()
-
-
-		));
-
-	}
+public function setPassword($password)
+{
+     $sql = new Sql();
+     $sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
+         ":password"=>$password,
+         ":iduser"=>$this->getiduser()
+     ));
+}
 	
 }
 

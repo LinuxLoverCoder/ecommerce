@@ -10,6 +10,8 @@ use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 use \Hcode\Model\Category;
 
+
+//carrega o template index
 $app = new Slim();
 
 $app->config('debug', true);
@@ -22,7 +24,7 @@ $app->get('/', function() {
 
 });
 
-
+//carrega a rota admin com o template index
 $app->get('/admin', function() {
     
     User::verifyLogin();
@@ -33,6 +35,7 @@ $app->get('/admin', function() {
 
 });
 
+//carrega a rota de login in admin 
 $app->get('/admin/login', function(){
 
 	$page = new PageAdmin([
@@ -46,6 +49,8 @@ $app->get('/admin/login', function(){
 
 });
 
+//recebe via post o login e a senha e redireciona para o /admin
+
 $app->post('/admin/login', function(){
 
 User::login($_POST["login"], $_POST["password"]);
@@ -55,6 +60,7 @@ exit;
 
 });
 
+//rota de logout, após dar logout
 $app->get('/admin/logout', function(){
 
 	User::logout();
@@ -63,6 +69,8 @@ $app->get('/admin/logout', function(){
 	exit;
 
 });
+
+//lista todos os usuários
 
 $app->get("/admin/users", function()
 {
@@ -124,22 +132,20 @@ $app->get("/admin/users/:iduser", function($iduser){
 
 });
 
-$app->post("/admin/users/create", function(){
-
-		User::verifyLogin();
-
-		$user = new User();
-
-		$_POST["inadmin"] = (isset($_POST["inadmin"]))?1:0;
-
-		$user->setData($_POST);
-
-		$user->save();
-
-		header("Location: /admin/users");
-		exit;
-
+$app->post("/admin/users/create", function () {
+    User::verifyLogin();
+    $user = new User();
+    $_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+    $_POST['despassword'] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, [
+        "cost"=>12
+    ]);
+    $user->setData($_POST);
+    $user->save();
+    header("Location: /admin/users");
+    exit;
 });
+
+
 
 $app->post("/admin/users/:iduser", function($iduser)
 
