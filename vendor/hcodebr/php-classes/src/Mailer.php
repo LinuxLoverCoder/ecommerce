@@ -63,7 +63,8 @@ class Mailer{
 		#Colocar anexos
 		#$mail->addAttachment('images/phpmailer_mini.png');
 		$this->mail->isSMTP();
-
+		
+//aqui ele vai verificar o ssl
 $this->mail->SMTPOptions = array(
     'ssl' => array(
         'verify_peer' => false,
