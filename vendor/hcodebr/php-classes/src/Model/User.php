@@ -7,6 +7,8 @@ class User extends Model{
 
 	const SESSION = "User";
 
+	const SECRET = "HcodePhp7_Secret";
+
 	public static function login ($login, $password)
 {
 
@@ -151,6 +153,63 @@ class User extends Model{
 			":iduser"=>$this->getiduser()
 
 		));
+	}
+
+
+	public static function getForgot($email)
+	{
+
+		$sql = new Sql();
+
+		$results = $sql->select("
+			SELECT * FROM tb_persons a INNER JOIN tb_users b USING(idperson) WHERE a.desemail = :email;
+			", array(
+				":email"=>$email
+			));
+
+		if (count($results) === 0)
+		{
+
+			throw new \Exception("Não foi possível encontrar a senha");
+			
+		}else{
+
+			$data = $results[0];
+
+			$results2 = $sql->select("CALL sp_userpasswordsrecoveries_create(:iduser, :desip)", array(
+				":iduser"=>$data["iduser"],
+				":desip"=>$_SERVER["REMOTE_ADDR"]
+
+			));
+
+			if (count($results2) === 0)
+			{
+
+
+				throw new \Exception("Não foi possível recuperar a senha");
+				
+			}
+			else{
+
+
+				$dataRecovery = $results2[0];
+
+				$code = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, User::SECRET, $dataRecovery["idrecovery"], MCRYPT_MODE_ECB));
+
+				$link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+
+				$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefinir senha da Hcode Store", "forgot", array(
+					"name"=>$data["desperson"],
+					"link"=>$link
+				));
+
+				$mailer->send();
+
+				return $data;
+			}
+
+		}
+
 	}
 }
 
