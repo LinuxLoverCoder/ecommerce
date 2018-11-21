@@ -7,6 +7,7 @@ use \Hcode\Page;
 use \Hcode\Model\Product;
 
 
+//Método para listar as categorias
 $app->get("/admin/categories", function(){
 
 	 User::verifyLogin();
@@ -23,6 +24,8 @@ $app->get("/admin/categories", function(){
 
 });
 
+
+//Método para chamar o template de criar categorias
 $app->get("/admin/categories/create", function(){
 
 	 User::verifyLogin();
@@ -35,7 +38,7 @@ $app->get("/admin/categories/create", function(){
 
 });
 
-
+//Método para criar categorias via post
 $app->post("/admin/categories/create", function(){
 
 	 User::verifyLogin();
@@ -54,6 +57,8 @@ $app->post("/admin/categories/create", function(){
 
 });
 
+
+//Método para deletar categorias pelo idcategory
 $app->get("/admin/categories/:idcategory/delete", function($idcategory){
 
 	 User::verifyLogin();
@@ -71,6 +76,8 @@ $app->get("/admin/categories/:idcategory/delete", function($idcategory){
 });
 
 
+
+//Método para chamar o template de editar categorias
 $app->get("/admin/categories/:idcategory", function($idcategory){
 
 	 User::verifyLogin();
@@ -88,7 +95,7 @@ $app->get("/admin/categories/:idcategory", function($idcategory){
 });
 
 
-
+//Métodos para editar categorias via post [idcategory]
 $app->post("/admin/categories/:idcategory", function($idcategory){
 
 	 User::verifyLogin();
@@ -109,12 +116,12 @@ $app->post("/admin/categories/:idcategory", function($idcategory){
 });
 
 
-
+//Método para relacionar produtos e categorias
 $app->get("/admin/categories/:idcategory/products", function($idcategory)
 {
 
 
- User::verifyLogin();
+ 	User::verifyLogin();
 
 	$category = new Category();
 
@@ -134,6 +141,8 @@ $app->get("/admin/categories/:idcategory/products", function($idcategory)
 });
 
 
+
+//Método para adicionar produtos na categoria selecionada
 $app->get("/admin/categories/:idcategory/products/:idproduct/add", function($idcategory, $idproduct)
 {
 
@@ -150,11 +159,14 @@ $app->get("/admin/categories/:idcategory/products/:idproduct/add", function($idc
 
 	$category->addProduct($product);
 
-	header("Location /admin/categories/".$idcategory."/products");
+	header("Location: /admin/categories/".$idcategory."/products");
 	exit;
 
 });
 
+
+
+//Método para deletar produto da categoria selecionada
 $app->get("/admin/categories/:idcategory/products/:idproduct/remove", function($idcategory, $idproduct)
 {
 
@@ -171,7 +183,7 @@ $app->get("/admin/categories/:idcategory/products/:idproduct/remove", function($
 
 	$category->removeProduct($product);
 
-	header("Location /admin/categories/".$idcategory."/products");
+	header("Location: /admin/categories/".$idcategory."/products");
 	exit;
 
 });

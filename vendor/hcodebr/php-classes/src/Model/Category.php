@@ -117,7 +117,7 @@ class Category extends Model{
 	}
 
 
-		public function removeProduct(Product $Product)
+		public function removeProduct(Product $product)
 
 	{
 

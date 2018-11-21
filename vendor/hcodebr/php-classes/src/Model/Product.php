@@ -7,13 +7,15 @@ use \Hcode\Mailer;
 class Product extends Model{
 
 	
-
+	//Método para listar os produtos pelo desproduct
 	public static function listAll()
 	{
 
 			$sql = new Sql();
 			return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
 	}
+
+
 
 	public static function checkList($list)
 	{
@@ -35,8 +37,7 @@ class Product extends Model{
 	}
 
 
-
-
+	//Método para criar produtos
 	public function save()
 	{
 		
@@ -61,6 +62,8 @@ class Product extends Model{
 
 	}
 
+
+	//Método para pegar os produtos da DB
 	public function get($idproduct)
 	{
 
@@ -75,6 +78,8 @@ class Product extends Model{
 		$this->setData($results[0]);
 	}
 
+
+	//Método para deletar produtos da tabela tb_products pelo idproduct
 	public function delete()
 	{
 		$sql = new Sql();
@@ -85,6 +90,8 @@ class Product extends Model{
 
 	}
 
+
+	//Método para checkar se existe foto para o produto
 	public function checkPhoto()
 
 	{
@@ -110,6 +117,7 @@ class Product extends Model{
 	}
 		
 
+
 	public function getValues()
 
 	{
@@ -121,6 +129,7 @@ class Product extends Model{
 	}
 
 
+	//Méetodo para setar o tipo de imagem enviada
 	public function setPhoto($file)
 	{
 

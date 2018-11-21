@@ -12,7 +12,7 @@ use \Slim\Slim;
 $app = new Slim();
 
 $app->config('debug', true);
-
+//faz a requisição de todos os arquivos necessários para o funcionamento da aplicação
 require_once("site.php");
 require_once("admin.php");
 require_once("admin-users.php");
